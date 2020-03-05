@@ -15,5 +15,17 @@ print(mass)
 density = gasoline
 mass = density * volume
 print(mass)
+density = ice
+mass = density * volume
+print(mass)
+density = humanbody
+mass = density * volume
+print(mass)
+density = silver
+mass = density * volume
+print(mass)
+density = platinum
+mass = density * volume
+print(mass)
 
 

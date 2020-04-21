@@ -1,8 +1,25 @@
 #Basic Animation in Matplotlib
-import ...
-
+from matplotlib import animation
+from numpy import linspace
+import matplotlib.pyplot as plt
+from numpy import sqrt, exp, pi
+import numpy as np
 plt.ion()
 #Make first plot
+fig = plt.figure
+
+def frame(args):
+    frame_no, s, x, lines = args
+    y = f(x, m, s)
+    lines[0].set_data(x, y)
+    return lines
+
+
+def init():
+    lines[0].set_data([], [])  # empty plot
+    return lines
+
+
 def f(x, m, s):
     return (1.0 / (sqrt(2 * pi) * s)) * exp(-0.5 * ((x - m) / s) ** 2)
 
@@ -20,13 +37,12 @@ lines = plt.plot(x, y)
 plt.axis([x[0], x[-1], -0.1, max_f])
 plt.xlabel('x')
 plt.ylabel('f')
-#Show Movie
-counter = 0
-for s in s_values:
-    y = f(x, m, s)
-    lines[0].set_ydata(y)
-    plt.legend(['s=%4.2f'.format(s)])
-    plt.draw()
-    plt.savefig('tmp_{:04d}.png'.format(counter))
-    counter += 1 
+s = np.array(0.2, 2, 0.1)
+frame_no = np.array(0.2, 2, 0.1)
+all_args = (frame_no, s, x, lines)
 
+
+anim = animation.FuncAnimation(fig, frame, all_args, interval=150, init_func=init, blit=True)
+
+plt.plot()
+plt.show()

@@ -1,26 +1,23 @@
 # Read two columns
 import numpy as np
-import matplotlib.pyplot as plt
-while True:
+
+
+def two_column_text_read(filename):
     try:
-        infile = open('str', 'r') # str is name of file
-        break
+        infile = open(filename, 'r')
     except OSError:
-        print("File not found, please select different file")
+        print('This file is not found.')
+        return
 
-x = [] # column 1
-y = [] # column 2
+    x = []
+    y = []
 
-for line in infile:
-    content = line.split() #splits two columns for reading
-    x.append(content[0])
-    y.append(content[1])
-infile.close()
-print(x)
-print(y)
+    for line in infile:
+        content = line.split()
+        x.append(float(content[0]))
+        y.append(float(content[1]))
+    infile.close()
 
-x, y = np.array(x), np.array(y)
-plt.plot(x, y, color='red', linewidth=1.5)
-plt.xlabel('Enter text')
-plt.ylabel('Enter more text')
-plt.show()
+    data = np.vstack([x, y]).T  # Arranges it in clearer columns the '.T'
+
+    return data

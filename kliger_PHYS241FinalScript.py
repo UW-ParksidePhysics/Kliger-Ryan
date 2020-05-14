@@ -91,7 +91,18 @@ def annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_mi
     y_range = y_max - y_min
     x_C = x_min + 0.05 * x_range
     y_C = y_max - 0.05 * y_range
+    x_S = x_min + x_range/2
+    y_S = y_max - y_range/2
+    x_A = x_min + x_range/2
+    y_A = ((y_max - y_range/2) + 0.0005)
+    print(A)
+    plt.title('Vinet Equation of State for Sn', y=1.05)
     plt.text(x_C, y_C, C)
+    print(S)
+    plt.text(x_S, y_S, r' $ \ Fd}$3$m} $')
+    print(bulk_modulus)
+    #plt.text(x_A, y_A, r' $A_0$ = GPa')
+
 
 
 

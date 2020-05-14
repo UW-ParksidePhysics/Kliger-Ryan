@@ -13,7 +13,7 @@ import numpy as np
 
 filename = 'Sn.Fd-3m.GGA-PBEsol.volumes_energies.dat'
 display_Graph = True
-my_eos = 'Vinet'
+my_eos = 'vinet'
 potential_name = 'sinusoidal'
 number_of_dimensions = 110
 potential_parameter = 100

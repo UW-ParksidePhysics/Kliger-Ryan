@@ -2,7 +2,7 @@ import statistics
 
 import two_column_text_read_10 as tctr
 import plot_data_with_fit_10
-import lowest_eigenvectors_10
+import lowest_eigenvectors_10 as le
 import univariate_statistics_10 as us
 import fit_curve_array_10
 import quadratic_fit_10 as qf
@@ -10,13 +10,17 @@ import matplotlib.pyplot as plt
 import equations_of_state as eos
 import statistics as st
 import numpy as np
+import generate_matrix as gm
 
 filename = 'Sn.Fd-3m.GGA-PBEsol.volumes_energies.dat'
 display_Graph = True
+display_graph2 = False
 my_eos = 'vinet'
 potential_name = 'sinusoidal'
 number_of_dimensions = 110
 potential_parameter = 100
+minimum_x = 1
+maximum_x = 400
 
 # 1.
 # Extract...(C) chemical symbol, (S) crystal symmetry symbol, (A) approximation
@@ -57,6 +61,7 @@ print('Fitted Data/Quadratic Coefficients:')
 print(eos_passed_info)
 equilibrium_volume = eos_parameters[3]
 bulk_modulus = eos_parameters[1]
+print(bulk_modulus)
 
 # 7.
 def convert_units(value_to_convert_from, units_of_value_converted_from, unit_to_convert_to):
@@ -74,16 +79,17 @@ def convert_units(value_to_convert_from, units_of_value_converted_from, unit_to_
 eos_volumes = np.linspace(min(volumes), max(volumes), len(eos_passed_info))
 
 print(eos_volumes)
-plt.plot(volumes, energies, 'o', color='red')
+plt.plot(volumes, energies, 'o', color='blue')
 plt.plot(eos_volumes, eos_passed_info, color='black')
-x_min = (min(volumes) - (0.1) * (max(volumes) - min(volumes)))
-x_max = (max(volumes) + (0.1) * (max(volumes) - min(volumes)))
-y_min = (min(energies) - (0.1) * (max(energies) - min(energies)))
-y_max = (max(energies) - (0.1) * (max(energies) - min(energies)))
+x_min = (min(volumes) - (0.39) * (max(volumes) - min(volumes)))
+x_max = (max(volumes) + (0.39) * (max(volumes) - min(volumes)))
+y_min = (min(energies) - (0.39) * (max(energies) - min(energies)))
+y_max = (max(energies) - (0.39) * (max(energies) - min(energies)))
 plt.xlim(x_min, x_max)
 plt.ylim(y_min, y_max)
 plt.xlabel(r' $V$ [eV/atom] ')
 plt.ylabel(r' $E$ [$\AA^3$/atom] ')
+plt.show()
 
 # 9.
 def annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_min, y_max):
@@ -95,13 +101,72 @@ def annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_mi
     y_S = y_max - y_range/2
     x_A = x_min + x_range/2
     y_A = ((y_max - y_range/2) + 0.0005)
+    x_Eqv = (x_min + x_range/2)
+    y_Eqv = ((y_max - y_range/2) - 0.004)
     print(A)
-    plt.title('Vinet Equation of State for Sn', y=1.05)
+    plt.title('Vinet Equation of State for Sn')
     plt.text(x_C, y_C, C)
     print(S)
     plt.text(x_S, y_S, r' $ \ Fd}$3$m} $')
-    print(bulk_modulus)
-    #plt.text(x_A, y_A, r' $A_0$ = GPa')
+    plt.text(x_A, y_A, r' $A_0$ =0.0028354960426282324 GPa')
+    print(equilibrium_volume)
+    plt.text(x_Eqv, y_Eqv, r' $V_0 = 155.59 \AA^3/atom $')
+    plt.figtext(0, 0, 'Created By Ryan Kliger 2020-05-14')
+annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_min, y_max)
+
+# 10.
+if display_Graph == True:
+    plt.show(display_Graph)
+elif display_Graph == False:
+    np.savefig('Sn.Fd-3m.GGA-PBEsol.png')
+
+
+# 11.
+square_matrix = gm.generate_matrix(minimum_x, maximum_x, number_of_dimensions, potential_name, potential_parameter)
+print('Matrix Generated:')
+print(square_matrix)
+
+# 12.
+eigenvalues, eigenvectors = le.lowest_eigenvectors(square_matrix, number_of_eigenvectors=3)
+print('eigenvectors/eigenvalues:')
+print(eigenvalues, eigenvectors)
+
+# 13.
+grid_of_spatial_points = np.linspace(-10, 10, number_of_dimensions)
+print('Grid of Spatial Points:')
+print(grid_of_spatial_points)
+
+# 14.
+plot1 = plt.plot(grid_of_spatial_points, eigenvectors[0][0:number_of_dimensions], color='red')
+plot2 = plt.plot(grid_of_spatial_points, eigenvectors[1][0:number_of_dimensions], color='green')
+plot3 = plt.plot(grid_of_spatial_points, eigenvectors[2][0:number_of_dimensions], color='blue')
+plt.xlabel('x [a.u.]')
+plt.ylabel(r' $\psi_n$(x)[a.u.]')
+plt.legend(plot1, plot2, plot3)(r'$\psi_n$, $E_1$=(1)[a.u.]', r'$\psi_n$, $E_2$=(2)[a.u.]', r'$\psi_n$, $E_3$=(3)[a.u.]')
+plt.axis([-10, 10, max(eigenvectors[0]) - 2, max(eigenvectors[0]) + 2])
+
+# 15.
+plt.axhline(color="black")
+
+# 16.
+plt.text(-9, -1.5,  "Created by Ryan Kliger 2020-05-14")
+
+# 17.
+plt.title('Select Wavefunctions for a Sinusoidal Potential on a Spatial Grid of 100 Points')
+
+# 18.
+if display_graph2 == True:
+    plt.show(display_graph2)
+elif display_graph2 == False:
+    np.savefig('Sinusoidal_Potential.png')
+
+
+
+
+
+
+
+
 
 
 

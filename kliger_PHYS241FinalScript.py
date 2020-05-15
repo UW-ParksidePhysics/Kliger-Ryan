@@ -14,7 +14,7 @@ import generate_matrix as gm
 
 filename = 'Sn.Fd-3m.GGA-PBEsol.volumes_energies.dat'
 display_Graph = True
-display_graph2 = False
+display_graph2 = True
 my_eos = 'vinet'
 potential_name = 'sinusoidal'
 number_of_dimensions = 110
@@ -104,7 +104,7 @@ def annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_mi
     x_Eqv = (x_min + x_range/2)
     y_Eqv = ((y_max - y_range/2) - 0.004)
     print(A)
-    plt.title('Vinet Equation of State for Sn')
+    plt.title('Vinet Equation of State for Sn', y=1.05)
     plt.text(x_C, y_C, C)
     print(S)
     plt.text(x_S, y_S, r' $ \ Fd}$3$m} $')
@@ -118,7 +118,7 @@ annotate_graph(C, S, A, bulk_modulus, equilibrium_volume, x_min, x_max, y_min, y
 if display_Graph == True:
     plt.show(display_Graph)
 elif display_Graph == False:
-    np.savefig('Sn.Fd-3m.GGA-PBEsol.png')
+    plt.savefig('Sn.Fd-3m.GGA-PBEsol.png')
 
 
 # 11.
@@ -142,7 +142,7 @@ plot2 = plt.plot(grid_of_spatial_points, eigenvectors[1][0:number_of_dimensions]
 plot3 = plt.plot(grid_of_spatial_points, eigenvectors[2][0:number_of_dimensions], color='blue')
 plt.xlabel('x [a.u.]')
 plt.ylabel(r' $\psi_n$(x)[a.u.]')
-plt.legend(plot1, plot2, plot3)(r'$\psi_n$, $E_1$=(1)[a.u.]', r'$\psi_n$, $E_2$=(2)[a.u.]', r'$\psi_n$, $E_3$=(3)[a.u.]')
+plt.legend((plot1, plot2, plot3), (r'$\psi_n$, $E_1$=(1)[a.u.]', r'$\psi_n$, $E_2$=(2)[a.u.]', r'$\psi_n$, $E_3$=(3)[a.u.]'))
 plt.axis([-10, 10, max(eigenvectors[0]) - 2, max(eigenvectors[0]) + 2])
 
 # 15.
@@ -152,13 +152,13 @@ plt.axhline(color="black")
 plt.text(-9, -1.5,  "Created by Ryan Kliger 2020-05-14")
 
 # 17.
-plt.title('Select Wavefunctions for a Sinusoidal Potential on a Spatial Grid of 100 Points')
+plt.title('Select Wavefunctions for a Sinusoidal Potential on a Spatial Grid of 110 Points')
 
 # 18.
 if display_graph2 == True:
     plt.show(display_graph2)
 elif display_graph2 == False:
-    np.savefig('Sinusoidal_Potential.png')
+    plt.savefig('Sinusoidal_Potential.png')
 
 
 
